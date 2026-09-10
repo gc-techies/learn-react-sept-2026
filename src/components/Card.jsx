@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
 
 export default class Card extends Component {
+    componentWillUnmount() {
+        console.log('unmounting', this.props.item.title);
+    }
     render() {
+        console.log('Card - render', this.props.item.title);
         return (
             <div className='col-sm-12 col-md-4'>
                 <div className="card">
@@ -25,7 +29,7 @@ export default class Card extends Component {
                             </span>
                             <button className="btn btn-outline-secondary" onClick={() => this.props.increment(this.props.item)}>+</button>
                         </div>
-                        <a href="#" className="btn btn-primary">Go somewhere</a>
+                        <a href="#" className="btn btn-danger" onClick={() => this.props.delete(this.props.item)}>Delete</a>
                     </div>
                 </div>
             </div>
