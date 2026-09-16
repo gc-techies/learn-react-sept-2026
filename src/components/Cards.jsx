@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Card from './Card';
 import data from '../data';
+import { getCategories } from '../data';
 import Pagination from './Pagination';
+import FilteringComp from './FilteringComp';
 
 export default class Cards extends Component {
     componentDidUpdate(prevProps, prevState) {
@@ -15,6 +17,15 @@ export default class Cards extends Component {
             return item;
          });
         this.setState({ data: resetData });
+    }
+
+    handleFilter = (category) => {
+        if(category === "All Categories"){
+            this.setState({ data: data(), currentCategory: category });
+            return;
+        }
+        const filteredData = data().filter(item => item.category === category);
+        this.setState({ data: filteredData, currentCategory: category });
     }
 
     handlePageClicked = (page) => {
@@ -59,17 +70,27 @@ export default class Cards extends Component {
         const startIndex = (currentPage - 1) * pageSize;
         const currentData = this.state.data.slice(startIndex, startIndex + pageSize);
         return (
-            <div className='container row'>
-                <button className='btn btn-danger' onClick={this.handleReset}>Reset</button>
-                {currentData.map((item) => (
-                    <Card
-                        key={item.id}
-                        item={item}
-                        increment={this.handleIncrement}
-                        decrement={this.handleDecrement}
-                        delete={this.handleDelete}
-                    />
-                ))}
+            <div className='container'>
+                <div className="row">
+                    <div className="col-md-3 col-sm-12">
+                        <button className='btn btn-danger mb-4' onClick={this.handleReset}>Reset</button>
+                        <FilteringComp 
+                            currentCategory={this.state.currentCategory}
+                            categories={this.state.categories} 
+                            onFilter={this.handleFilter} />
+                    </div>
+                    <div className="col-md-9 col-sm-12 row">
+                        {currentData.map((item) => (
+                            <Card
+                                key={item.id}
+                                item={item}
+                                increment={this.handleIncrement}
+                                decrement={this.handleDecrement}
+                                delete={this.handleDelete}
+                            />
+                        ))}
+                    </div>
+                </div>
                 <Pagination 
                     pageSize={pageSize} 
                     itemsCount={this.state.data.length} 
@@ -85,8 +106,10 @@ export default class Cards extends Component {
         console.log('Cards - constructor');
         this.state = {
             data: data(),
-            pageSize: 4,
+            categories: getCategories(),
+            pageSize: 3,
             currentPage: 1,
+            currentCategory: "All Categories"
         }
     }
 }
