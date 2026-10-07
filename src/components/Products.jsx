@@ -5,7 +5,7 @@ import { getCategories } from '../data';
 import Pagination from './Pagination';
 import FilteringComp from './FilteringComp';
 
-export default class Cards extends Component {
+export default class Products extends Component {
     componentDidUpdate(prevProps, prevState) {
         console.log('previous prop', prevProps);
         console.log('previous state', prevState);
@@ -61,11 +61,11 @@ export default class Cards extends Component {
     }
 
     componentDidMount() {
-        console.log('Cards - component did mount');
+        console.log('Products - component did mount');
     }
 
     render() {
-        console.log('Cards - render');
+        console.log('Products - render');
         const { currentPage, pageSize } = this.state;
         const startIndex = (currentPage - 1) * pageSize;
         const currentData = this.state.data.slice(startIndex, startIndex + pageSize);
@@ -103,7 +103,7 @@ export default class Cards extends Component {
 
     constructor(props) {
         super(props);
-        console.log('Cards - constructor');
+        console.log('Products - constructor');
         this.state = {
             data: data(),
             categories: getCategories(),
