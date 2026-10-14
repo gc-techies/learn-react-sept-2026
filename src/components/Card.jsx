@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom';
 
 export default class Card extends Component {
     componentWillUnmount() {
@@ -29,6 +30,8 @@ export default class Card extends Component {
                             </span>
                             <button className="btn btn-outline-secondary" onClick={() => this.props.increment(this.props.item)}>+</button>
                         </div>
+                        <Link to={`/product/${this.props.item.id}`} className="btn btn-primary">Details</Link>
+                        &nbsp;
                         <a href="#" className="btn btn-danger" onClick={() => this.props.delete(this.props.item)}>Delete</a>
                     </div>
                 </div>

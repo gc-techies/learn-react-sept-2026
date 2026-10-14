@@ -4,6 +4,7 @@ import Home from './Home'
 import Dashboard from './Dashboard'
 import Products from './Products'
 import NavBar from './NavBar'
+import ProductDetails from './ProductDetails'
 
 export default class App extends Component {
     render() {
@@ -13,6 +14,7 @@ export default class App extends Component {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/products" element={<Products />} />
+                    <Route path="/product/:id" element={<ProductDetails />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                 </Routes>
             </div>
