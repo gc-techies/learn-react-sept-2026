@@ -96,13 +96,13 @@ export default class Products extends Component {
     constructor(props) {
         super(props);
         if(this.props.category === "All Categories"){
-            this.state({ 
+            this.state = { 
                 data: data(), 
                 currentCategory: this.props.category ,
                 categories: getCategories(),
                 pageSize: 3,
                 currentPage: 1,
-            });
+            };
         }else {
             const filteredData = data().filter(item => item.category === this.props.category);
             this.state = {
