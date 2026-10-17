@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Home from './Home'
 import Dashboard from './Dashboard'
-import Products from './Products'
 import NavBar from './NavBar'
 import ProductDetails from './ProductDetails'
+import ProductsWrapper from '../component-wrappers/ProductsWrapper'
 
 export default class App extends Component {
     render() {
@@ -13,7 +13,7 @@ export default class App extends Component {
                 <NavBar />
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/products" element={<Products />} />
+                    <Route path="/products" element={<ProductsWrapper />} />
                     <Route path="/product/:id" element={<ProductDetails />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                 </Routes>

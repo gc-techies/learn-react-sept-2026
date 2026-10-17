@@ -6,11 +6,6 @@ import Pagination from './Pagination';
 import FilteringComp from './FilteringComp';
 
 export default class Products extends Component {
-    componentDidUpdate(prevProps, prevState) {
-        console.log('previous prop', prevProps);
-        console.log('previous state', prevState);
-    }
-
     handleReset = () => {
         const resetData = this.state.data.map(item => { 
             item.qty = 0;
@@ -25,6 +20,7 @@ export default class Products extends Component {
             return;
         }
         const filteredData = data().filter(item => item.category === category);
+        console.log('category', category, 'data', data(), 'filteredData', filteredData);
         this.setState({ data: filteredData, currentCategory: category });
     }
 
@@ -60,12 +56,8 @@ export default class Products extends Component {
         // this.setState(() => newState);
     }
 
-    componentDidMount() {
-        console.log('Products - component did mount');
-    }
-
     render() {
-        console.log('Products - render');
+        console.log('data', this.state.data);
         const { currentPage, pageSize } = this.state;
         const startIndex = (currentPage - 1) * pageSize;
         const currentData = this.state.data.slice(startIndex, startIndex + pageSize);
@@ -103,13 +95,23 @@ export default class Products extends Component {
 
     constructor(props) {
         super(props);
-        console.log('Products - constructor');
-        this.state = {
-            data: data(),
-            categories: getCategories(),
-            pageSize: 3,
-            currentPage: 1,
-            currentCategory: "All Categories"
+        if(this.props.category === "All Categories"){
+            this.state({ 
+                data: data(), 
+                currentCategory: this.props.category ,
+                categories: getCategories(),
+                pageSize: 3,
+                currentPage: 1,
+            });
+        }else {
+            const filteredData = data().filter(item => item.category === this.props.category);
+            this.state = {
+                data: filteredData,
+                categories: getCategories(),
+                pageSize: 3,
+                currentPage: 1,
+                currentCategory: this.props.category
+            }
         }
     }
 }
