@@ -6,6 +6,7 @@ import NavBar from './NavBar'
 import ProductDetails from './ProductDetails'
 import ProductsWrapper from '../component-wrappers/ProductsWrapper'
 import PageNotFound from './PageNotFound'
+import LoginForm from './LoginForm'
 
 export default class App extends Component {
     render() {
@@ -17,6 +18,7 @@ export default class App extends Component {
                     <Route path="/products" element={<ProductsWrapper />} />
                     <Route path="/product/:id" element={<ProductDetails />} />
                     <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/login" element={<LoginForm />} />
                     <Route path="*" element={<PageNotFound />} />
                 </Routes>
             </div>
