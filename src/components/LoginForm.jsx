@@ -1,11 +1,24 @@
 import React, { Component } from 'react'
-import { object, string, number, date } from 'yup';
+// import { useForm } from 'react-hook-form';
+// import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import Input from '../reusable-components/Input';
 
 export default class LoginForm extends Component {
     email = React.createRef();
     password = React.createRef();
+    // 1. Define your schema blueprint
+    schema = yup.object().shape({
+        email: yup
+            .string()
+            .email('Invalid email format')
+            .required('Email is required'),
+        password: yup
+            .string()
+            .min(6, 'Password must be at least 6 characters')
+            .required('Password is required'),
+    });
 
     state = {
         credentials: {
@@ -33,15 +46,23 @@ export default class LoginForm extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
+        const { credentials } = this.state;
 
         // validate.. if errors, show errors and return, else continue
-        const errors = this.validate();
-        console.error(errors);
-        this.setState({errors: errors || {}});
+        try {
+            yup.string()
+                .required("Email is required")
+                .email('must be a valid email')
+                .validateSync(credentials.email.trim());
+            yup.string().required("Password is required").validateSync(credentials.password.trim());
+            this.setState({errors: errors || {}});
 
-        const email = this.email.current.value;
-        const password = this.password.current.value;
-        console.log(`Email: ${email}, Password: ${password}`);
+            const email = this.email.current.value;
+            const password = this.password.current.value;
+            console.log(`Email: ${email}, Password: ${password}`);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     handleChange = (event) => {
