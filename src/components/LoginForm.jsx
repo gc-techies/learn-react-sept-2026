@@ -1,15 +1,21 @@
-import React, { Component } from 'react'
-// import { useForm } from 'react-hook-form';
-// import { yupResolver } from '@hookform/resolvers/yup';
+import React, { useState } from 'react'
+import { useForm, Controller  } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import DateTimePicker from 'react-datetime-picker';
+import 'react-datetime-picker/dist/DateTimePicker.css';
 
-import Input from '../reusable-components/Input';
+import YupInput from '../reusable-components/YupInput';
 
-export default class LoginForm extends Component {
-    email = React.createRef();
-    password = React.createRef();
+export default function LoginForm() {
+    
+    const [credentials, setCredentials] = useState({
+        email: '',
+        password: ''
+    });
+
     // 1. Define your schema blueprint
-    schema = yup.object().shape({
+    const schema = yup.object().shape({
         email: yup
             .string()
             .email('Invalid email format')
@@ -20,81 +26,49 @@ export default class LoginForm extends Component {
             .required('Password is required'),
     });
 
-    state = {
-        credentials: {
-            email: 'test@example.com',
-            password: ''
-        },
-        errors: {}
+    const {
+        register,
+        handleSubmit,
+        control,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(schema),
+    })
+
+    const submit = (data) => {
+        console.log(data);
+        // submit data to server
+        const creds = credentials;
     }
 
-    validate = () => {
-        const errors = {};
-        const { credentials } = this.state;
-        if(credentials.email.trim() === ''){
-            errors.email = "Email is required";
-        }
-        if(credentials.password.trim() === ""){
-            errors.password = "Password is required";
-        }
-        if(credentials.password.trim().length < 5){
-            errors.password = "Password must be at least 6 Characters"
-        }
-
-        return Object.keys(errors).length === 0 ? null : errors;
-    }
-
-    handleSubmit = (event) => {
-        event.preventDefault();
-        const { credentials } = this.state;
-
-        // validate.. if errors, show errors and return, else continue
-        try {
-            yup.string()
-                .required("Email is required")
-                .email('must be a valid email')
-                .validateSync(credentials.email.trim());
-            yup.string().required("Password is required").validateSync(credentials.password.trim());
-            this.setState({errors: errors || {}});
-
-            const email = this.email.current.value;
-            const password = this.password.current.value;
-            console.log(`Email: ${email}, Password: ${password}`);
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    handleChange = (event) => {
-        const credentials = { ...this.state.credentials };
-        credentials[event.currentTarget.name] = event.currentTarget.value;
-        this.setState({ credentials });
-    }
-
-    render() {
-        return (
+    return (
         <div>
             <h2>Login</h2>
-            <form onSubmit={this.handleSubmit}>
-                <Input 
+            <form onSubmit={handleSubmit(submit)} className='d-flex flex-column'>
+                <YupInput 
+                    register = {register}
                     name='email' 
                     type='email' 
-                    onChange={this.handleChange} 
-                    value={this.state.credentials.email} 
-                    ref={this.email}
-                    error={this.state.errors.email}
+                    label={"Email"}
+                    error={errors.email?.message}
                 />
-                <Input 
+                <YupInput 
+                    register = {register}
                     name='password' 
-                    type='password' 
-                    onChange={this.handleChange} 
-                    value={this.state.credentials.password} 
-                    ref={this.password}
-                    error={this.state.errors.password}
+                    type='password'  
+                    label={"Password"}
+                    error={errors.password?.message}
                 />
-                <button type="submit" className="btn btn-primary mt-2">Login</button>
+
+                <Controller
+                    control={control}
+                    name='date'
+                    render={({ field }) => (
+                        <DateTimePicker  {...field} />
+                    )} 
+                />
+                <button type="submit" className="btn btn-primary mt-2 w-25">Login</button>
             </form>
         </div>
-        )
-    }
+    )
 }
