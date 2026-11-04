@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+
 import Card from './Card';
 import data from '../data';
 import { getCategories } from '../data';
@@ -6,8 +8,45 @@ import Pagination from './Pagination';
 import FilteringComp from './FilteringComp';
 
 export default class Products extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            fetchedData: [],
+            data: [],
+            categories: getCategories(),
+            pageSize: 3,
+            currentPage: 1,
+            currentCategory: this.props.category
+        };
+    }
+    async componentDidMount() {
+        // axios.get('https://fakestoreapi.com/products')
+        //     .then(response => {
+        //         console.log('Fetched products:', response.data);
+        //     })
+        //     .catch(error => {
+        //         console.error('Error fetching products:', error);
+        //     });
+        try {
+            const response = await axios.get('https://fakestoreapi.com/products');
+            if(this.props.category === "All Categories"){
+                this.setState({
+                    fetchedData: response.data,
+                    data: response.data,
+                })
+            }else {
+                const filteredData = response.data.filter(item => item.category === this.props.category);
+                this.setState({
+                    fetchedData: response.data,
+                    data: filteredData,
+                })
+            }
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    }
     handleReset = () => {
-        const resetData = this.state.data.map(item => { 
+        const resetData = this.state.fetchedData.map(item => { 
             item.qty = 0;
             return item;
          });
@@ -16,11 +55,10 @@ export default class Products extends Component {
 
     handleFilter = (category) => {
         if(category === "All Categories"){
-            this.setState({ data: data(), currentCategory: category });
+            this.setState({ data: this.state.fetchedData, currentCategory: category });
             return;
         }
-        const filteredData = data().filter(item => item.category === category);
-        console.log('category', category, 'data', data(), 'filteredData', filteredData);
+        const filteredData = this.state.fetchedData.filter(item => item.category === category);
         this.setState({ data: filteredData, currentCategory: category });
     }
 
@@ -91,27 +129,5 @@ export default class Products extends Component {
                 />
             </div>
         )
-    }
-
-    constructor(props) {
-        super(props);
-        if(this.props.category === "All Categories"){
-            this.state = { 
-                data: data(), 
-                currentCategory: this.props.category ,
-                categories: getCategories(),
-                pageSize: 3,
-                currentPage: 1,
-            };
-        }else {
-            const filteredData = data().filter(item => item.category === this.props.category);
-            this.state = {
-                data: filteredData,
-                categories: getCategories(),
-                pageSize: 3,
-                currentPage: 1,
-                currentCategory: this.props.category
-            }
-        }
     }
 }
