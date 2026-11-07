@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import Home from './Home'
-import Dashboard from './Dashboard'
+import Home from '../routes/Home'
+import Dashboard from '../routes/Dashboard'
 import NavBar from './NavBar'
-import ProductDetails from './ProductDetails'
 import ProductsWrapper from '../component-wrappers/ProductsWrapper'
-import PageNotFound from './PageNotFound'
-import LoginForm from './LoginForm'
+import PageNotFound from '../routes/PageNotFound'
+import LoginForm from '../routes/LoginForm'
+import ProductDetailsWrapper from '../component-wrappers/ProductDetailsWrapper'
 
 export default class App extends Component {
     render() {
@@ -16,7 +16,7 @@ export default class App extends Component {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/products" element={<ProductsWrapper />} />
-                    <Route path="/product/:id" element={<ProductDetails />} />
+                    <Route path="/product/:id" element={<ProductDetailsWrapper />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/login" element={<LoginForm />} />
                     <Route path="*" element={<PageNotFound />} />

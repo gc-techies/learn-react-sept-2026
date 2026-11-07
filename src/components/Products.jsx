@@ -6,6 +6,7 @@ import data from '../data';
 import { getCategories } from '../data';
 import Pagination from './Pagination';
 import FilteringComp from './FilteringComp';
+import ItemForm from './ItemForm';
 
 export default class Products extends Component {
     constructor(props) {
@@ -108,6 +109,7 @@ export default class Products extends Component {
                             currentCategory={this.state.currentCategory}
                             categories={this.state.categories} 
                             onFilter={this.handleFilter} />
+                        <ItemForm />
                     </div>
                     <div className="col-md-9 col-sm-12 row">
                         {currentData.map((item) => (
