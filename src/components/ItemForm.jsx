@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import YupInput from '../reusable-components/YupInput';
 
-export default function ItemForm() {
+export default function ItemForm({ createItem }) {
 
     // 1. Define your schema blueprint
     const schema = yup.object().shape({
@@ -34,10 +34,8 @@ export default function ItemForm() {
         resolver: yupResolver(schema),
     })
 
-    const submit = (data) => {
-        console.log(data);
-        // submit data to server
-        const creds = credentials;
+    const submit = async (data) => {
+        await createItem(data);
     }
 
     return (

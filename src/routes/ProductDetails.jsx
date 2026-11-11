@@ -38,32 +38,38 @@ export default class ProductDetails extends Component {
                     </div>
                     </div>
                     <div className="col-12 col-md-5">
-                    <div className="d-flex flex-column gap-2">
-                        <h4>{item.title}</h4>
-                        <h4 className="fw-bold">${item.price.toFixed(2)}</h4>
-                        <h6 className="fw-bold">Category: {item.category}</h6>
-                        <div className="d-flex flex-row justify-content-between align-items-center my-3">
-                        <span>
-                            <b>Reviews</b> ({item.rating?.count})
-                        </span>
-                        <span>
-                            <b>Rating</b>: {item.rating.rate}{" "}
-                            <i className="bi bi-star-fill text-warning"></i>
-                        </span>
+                        <div className="d-flex flex-column gap-2">
+                            <h4>{item.title}</h4>
+                            <h4 className="fw-bold">${item.price?.toFixed(2)}</h4>
+                            <h6 className="fw-bold">Category: {item.category}</h6>
+                            <div className="d-flex flex-row justify-content-between align-items-center my-3">
+                            <span>
+                                <b>Reviews</b> ({item.rating?.count})
+                            </span>
+                            <span>
+                                <b>Rating</b>: {item.rating?.rate}{" "}
+                                <i className="bi bi-star-fill text-warning"></i>
+                            </span>
+                            </div>
+                            <div>
+                            <b>Description:</b>
+                            <p>{item.description}</p>
+                            </div>
+                            <div className="d-flex flex-row justify-content-between align-items-center gap-2">
+                                <button
+                                    className="btn btn-primary"
+                                    // onClick={() => addCart(item)}
+                                >
+                                    Add to cart
+                                </button>
+                                <button
+                                    className="btn btn-danger"
+                                    onClick={() => this.props.navigate('/product/update/' + item.id)}
+                                >
+                                    Update
+                                </button>
+                            </div>
                         </div>
-                        <div>
-                        <b>Description:</b>
-                        <p>{item.description}</p>
-                        </div>
-                        <div>
-                        <button
-                            className="btn btn-primary"
-                            // onClick={() => addCart(item)}
-                        >
-                            Add to cart
-                        </button>
-                        </div>
-                    </div>
                     </div>
                 </div>
                 </div>

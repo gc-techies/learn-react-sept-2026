@@ -84,6 +84,18 @@ export default class Products extends Component {
         this.setState({ data: filtered });
     }
 
+    handleCreate = async (item) => {
+        console.log('handle create called', item);
+        try {
+            // submit data to server
+            const response = await axios.post('https://fakestoreapi.com/products', item);
+            const data = [response.data, ...this.state.data];
+            this.setState({ data });
+        } catch (error) {
+            console.error('Error creating item:', error);
+        }
+    }
+
     handleDecrement = (item) => {
         const clone = [...this.state.data]; // => clone the data prop in the state object
         const index = clone.indexOf(item);
@@ -109,7 +121,7 @@ export default class Products extends Component {
                             currentCategory={this.state.currentCategory}
                             categories={this.state.categories} 
                             onFilter={this.handleFilter} />
-                        <ItemForm />
+                        <ItemForm createItem={this.handleCreate} />
                     </div>
                     <div className="col-md-9 col-sm-12 row">
                         {currentData.map((item) => (
