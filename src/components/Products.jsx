@@ -84,7 +84,7 @@ export default class Products extends Component {
         this.setState({ data: filtered });
     }
 
-    handleCreate = async (item) => {
+    handlePerssismisticCreate = async (item) => {
         console.log('handle create called', item);
         try {
             // submit data to server
@@ -121,7 +121,7 @@ export default class Products extends Component {
                             currentCategory={this.state.currentCategory}
                             categories={this.state.categories} 
                             onFilter={this.handleFilter} />
-                        <ItemForm createItem={this.handleCreate} />
+                        <ItemForm createItem={this.handlePerssismisticCreate} />
                     </div>
                     <div className="col-md-9 col-sm-12 row">
                         {currentData.map((item) => (
