@@ -85,7 +85,25 @@ export default class Products extends Component {
     }
 
     handlePerssismisticCreate = async (item) => {
-        console.log('handle create called', item);
+        try {
+            // submit data to server
+            const response = await axios.post('https://fakestoreapi.com/products', item);
+            const data = [response.data, ...this.state.data];
+            this.setState({ data });
+        } catch (error) {
+            // expected error (400 range) - client side error
+            if(error.response && error.response.status >= 400 && error.response.status < 500){
+                alert('Bad request. Please check the data you are sending.');
+            }else {
+                // unexpected error
+                alert("Sorry for the inconviniences. We're working to get the requsted service back up");
+            }
+            console.error('Error creating item:', error);
+        }
+    }
+
+    handleOptimisticCreate = async (item) => {
+        const originalData = [...this.state.data];
         try {
             // submit data to server
             const response = await axios.post('https://fakestoreapi.com/products', item);
@@ -93,6 +111,7 @@ export default class Products extends Component {
             this.setState({ data });
         } catch (error) {
             console.error('Error creating item:', error);
+            this.setState({ data: originalData });
         }
     }
 
